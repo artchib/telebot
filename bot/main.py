@@ -60,7 +60,7 @@ def button_callback_handler(bot: Bot, update: Update):
 def do_start(bot: Bot, update: Update):
     bot.send_message(
         chat_id=update.message.chat_id,
-        text='Что на Что меняем?',
+        text='Что на Что меняем АААААААА?',
         reply_markup= get_main_keyboard(),
     )
 
