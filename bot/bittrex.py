@@ -1,3 +1,4 @@
+# coding: utf8
 import requests
 from logging import getLogger
 

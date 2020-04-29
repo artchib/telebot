@@ -1,3 +1,4 @@
+# coding: utf8
 from telegram import Bot
 from telegram import Update
 from telegram.ext import Updater
