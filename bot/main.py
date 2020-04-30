@@ -1,4 +1,5 @@
 # coding: utf8
+# -*- coding: utf-8 -*-
 from telegram import Bot
 from telegram import Update
 from telegram.ext import Updater
