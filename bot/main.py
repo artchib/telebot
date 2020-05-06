@@ -2,19 +2,20 @@
 # -*- coding: utf-8 -*-
 from telegram import Bot
 from telegram import Update
-from telegram.ext import Updater
+from telegram.ext import Updater, CallbackContext
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler
 from telegram.ext import CallbackQueryHandler
 from telegram import InlineKeyboardMarkup
 from telegram import InlineKeyboardButton
 from telegram.ext import Filters
-# from telegram import KeyboardButton
-# from telegram import ReplyKeyboardMarkup
 from bot.bittrex import BittrexClient
 from bot.bittrex import BittrexError
+from logging import getLogger
+from bot.config import load_config
 
-from bot.config import TG_TOKEN
+config = load_config()
+logger = getLogger(__name__)
 
 USD_BTC_PAIR = 'USD-BTC'
 USD_DASH_PAIR = 'USD-DASH'
@@ -50,7 +51,7 @@ def get_main_keyboard():
     ]
     return InlineKeyboardMarkup(keyboard)
 
-def button_callback_handler(bot: Bot, update: Update):
+def button_callback_handler(update: Update, context: CallbackContext,):
     query = update.callback_query
     call_data = query.data
     print(call_data)
@@ -98,37 +99,59 @@ def button_callback_handler(bot: Bot, update: Update):
         )
 
 
-def do_start(bot: Bot, update: Update):
-    bot.send_message(
+def do_start(update: Update, context: CallbackContext):
+    global cur_to_cur
+    cur_to_cur = ''
+    context.bot.send_message(
         chat_id=update.message.chat_id,
         text='Что на Что меняем АААААААА?',
         reply_markup= get_main_keyboard(),
     )
 
-def do_text(bot: Bot, update: Update):
-    chat_id = update.message.chat_id
+def do_text(update: Update, context: CallbackContext):
+    chat_id = update.effective_chat.id
     message = update.message.text
     global cur_to_cur, rate_btc
-    if message.isdigit:
+    if message.isdigit():
         print(f'сообщение цифра, cur_to_cur={cur_to_cur}, цифра = {message}')
-        if cur_to_cur == 'BTC_USD':
-            text = f'= {float(message) * rate_btc} $'
-        elif cur_to_cur == 'USD_BTC':
-            text = f'= {float(message) / rate_btc} BTC'
-        bot.send_message(
+        if cur_to_cur != '':
+            if cur_to_cur == 'BTC_USD':
+                text = f'= {float(message) * rate_btc} $'
+            elif cur_to_cur == 'USD_BTC':
+                text = f'= {float(message) / rate_btc} BTC'
+        else:
+            context.bot.send_message(
+                chat_id=chat_id,
+                text='Не выбрано направление обмена',
+                reply_markup=get_main_keyboard(),
+            )
+        context.bot.send_message(
             chat_id=chat_id,
             text=text,
             reply_markup=get_main_keyboard(),
         )
+    else:
+        context.bot.send_message(
+            chat_id=chat_id,
+            text='Вы ввели текст, а не цифру',
+         #   reply_markup=get_main_keyboard(),
+        )
+
 
 
 def main():
+    logger.info("Запускаем бота...")
     bot = Bot(
-        token=TG_TOKEN
+        token=config.TG_TOKEN,
     )
     updater = Updater(
-        bot=bot
+        bot=bot,
+        use_context=True,
     )
+
+    info = bot.getMe()
+    logger.info(f'Bot info: {info}')
+
     global cur_to_cur
 
     start_handler = CommandHandler('start', do_start)
