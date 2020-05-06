@@ -133,7 +133,7 @@ def do_text(update: Update, context: CallbackContext):
     else:
         context.bot.send_message(
             chat_id=chat_id,
-            text='Вы ввели текст, а не цифру',
+            text='Вы ввели текст, а не цифрууууу',
          #   reply_markup=get_main_keyboard(),
         )
 
