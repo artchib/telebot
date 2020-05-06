@@ -1,1 +1,3 @@
 .idea/
+/my_space/codes/Python/cryptochanbot/bot/__pycache__/
+.DS_Store
