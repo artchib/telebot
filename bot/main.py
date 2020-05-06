@@ -112,7 +112,18 @@ def do_text(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     message = update.message.text
     global cur_to_cur, rate_btc
-    if message.isdigit():
+
+    def is_digit(string):
+        if string.isdigit():
+            return True
+        else:
+            try:
+                float(string)
+                return True
+            except ValueError:
+                return False
+
+    if is_digit(message):
         print(f'сообщение цифра, cur_to_cur={cur_to_cur}, цифра = {message}')
         if cur_to_cur != '':
             if cur_to_cur == 'BTC_USD':
