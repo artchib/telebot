@@ -81,16 +81,6 @@ def button_callback_handler(update: Update, context: CallbackContext,):
         )
 
 
-    if call_data == 'converter':
-        # print('RABOTAET KONVERTER')
-        # query.edit_message_text(
-        #     text='Это ковертер',
-        #     reply_markup=get_convert_keyboard(),
-        # )
-
-        pass
-
-
     if call_data == 'btmk':
         print('srabotal BACK')
         query.edit_message_text(
@@ -100,8 +90,6 @@ def button_callback_handler(update: Update, context: CallbackContext,):
 
 
 def do_start(update: Update, context: CallbackContext):
-    global cur_to_cur
-    cur_to_cur = ''
     context.bot.send_message(
         chat_id=update.message.chat_id,
         text='Что на Что меняем АААААААА?',
@@ -111,7 +99,6 @@ def do_start(update: Update, context: CallbackContext):
 def do_text(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     message = update.message.text
-    global cur_to_cur, rate_btc
 
     def is_digit(string):
         if string.isdigit():
@@ -122,7 +109,7 @@ def do_text(update: Update, context: CallbackContext):
                 return True
             except ValueError:
                 return False
-
+    print(cur_to_cur)
     if is_digit(message):
         print(f'сообщение цифра, cur_to_cur={cur_to_cur}, цифра = {message}')
         if cur_to_cur != '':
@@ -164,7 +151,7 @@ def main():
     logger.info(f'Bot info: {info}')
 
     global cur_to_cur
-
+    cur_to_cur = ''
     start_handler = CommandHandler('start', do_start)
     buttons_handler = CallbackQueryHandler(callback=button_callback_handler)
     text_handler = MessageHandler(Filters.text, do_text)
