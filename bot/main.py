@@ -22,16 +22,6 @@ USD_DASH_PAIR = 'USD-DASH'
 BTC_TO_USD_BUTT = 'BTC--->USD'
 USD_TO_BTC_BUTT = 'USD--->BTC'
 
-# def get_convert_keyboard():
-#     keyboard = [
-#         [
-#             KeyboardButton(BTC_TO_USD_BUTT),
-#             KeyboardButton(USD_TO_BTC_BUTT),
-#
-#         ],
-#     ]
-#     return ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
-
 def back_button():
 
     keyboard = [
@@ -92,7 +82,7 @@ def button_callback_handler(update: Update, context: CallbackContext,):
 def do_start(update: Update, context: CallbackContext):
     context.bot.send_message(
         chat_id=update.message.chat_id,
-        text='Что на Что меняем АААААААА?',
+        text='Что на Что меняем ?',
         reply_markup= get_main_keyboard(),
     )
 
