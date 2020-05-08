@@ -1,0 +1,13 @@
+[Unit]
+Description=TelebotApp
+After=network.target
+
+[Service]
+User=tele_b
+Group=tele_b
+WorkinDirectory=/home/tele_b/telebot/
+Environment="PYTHONPATH=/home/tele_b/telebot/"
+ExecStart=python3 /home/tele_b/telebot/bot/main.py
+
+[Install]
+WantedBy=multi-user.target
