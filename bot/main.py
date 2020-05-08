@@ -120,7 +120,7 @@ def do_text(update: Update, context: CallbackContext):
         else:
             context.bot.send_message(
                 chat_id=chat_id,
-                text='Не выбрано направление обмена',
+                text='Не выбрано направление обменаааа',
                 reply_markup=get_main_keyboard(),
             )
         context.bot.send_message(
