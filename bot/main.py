@@ -61,7 +61,7 @@ def button_callback_handler(update: Update, context: CallbackContext,):
 
     if call_data == 'btc_to_usd':
         client = BittrexClient()
-        global rate_btc
+        global rate
         rate = client.get_last_price(pair=USD_BTC_PAIR)
         text = f'Сейчас за один биткоин дают {rate} долларов\n Введите кол-во BTC:'
         print(f'srabotal btc--usd ----- {rate}')
@@ -156,9 +156,17 @@ def do_text(update: Update, context: CallbackContext):
         print(f'сообщение цифра, cur_to_cur={cur_to_cur}, цифра = {message}')
         if cur_to_cur != '':
             if cur_to_cur == 'BTC_USD':
-                text = f'= {float(message) * rate_btc} $'
+                text = f'= {float(message) * rate} $'
             elif cur_to_cur == 'USD_BTC':
-                text = f'= {float(message) / rate_btc} BTC'
+                text = f'= {float(message) / rate} BTC'
+            elif cur_to_cur == 'DASH_USD':
+                text = f'= {float(message) * rate} $'
+            elif cur_to_cur == 'USD_DASH':
+                text = f'= {float(message) / rate} DASH'
+            elif cur_to_cur == 'BTC_DASH':
+                text = f'= {float(message) / rate} DASH'
+            elif cur_to_cur == 'DASH_BTC':
+                text = f'= {float(message) * rate} BTC'
         else:
             context.bot.send_message(
                 chat_id=chat_id,
