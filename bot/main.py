@@ -19,8 +19,14 @@ logger = getLogger(__name__)
 
 USD_BTC_PAIR = 'USD-BTC'
 USD_DASH_PAIR = 'USD-DASH'
+BTC_DASH_PAIR = 'BTC-DASH'
+
 BTC_TO_USD_BUTT = 'BTC--->USD'
 USD_TO_BTC_BUTT = 'USD--->BTC'
+DASH_TO_USD_BUTT = 'DASH--->USD'
+USD_TO_DASH_BUTT = 'USD--->DASH'
+BTC_TO_DASH_BUTT = 'BTC--->DASH'
+DASH_TO_BTC_BUTT = 'DASH--->BTC'
 
 def back_button():
 
@@ -33,10 +39,16 @@ def back_button():
 def get_main_keyboard():
     keyboard = [
         [
-            InlineKeyboardButton(text=BTC_TO_USD_BUTT, callback_data='btc_to_usd')
+            InlineKeyboardButton(text=BTC_TO_USD_BUTT, callback_data='btc_to_usd'),
+            InlineKeyboardButton(text=USD_TO_BTC_BUTT, callback_data='usd_to_btc'),
          ],
         [
-            InlineKeyboardButton(text=USD_TO_BTC_BUTT, callback_data='usd_to_btc')
+            InlineKeyboardButton(text=DASH_TO_USD_BUTT, callback_data='dash_to_usd'),
+            InlineKeyboardButton(text=USD_TO_DASH_BUTT, callback_data='usd_to_dash'),
+        ],
+        [
+            InlineKeyboardButton(text=BTC_TO_DASH_BUTT, callback_data='btc_to_dash'),
+            InlineKeyboardButton(text=DASH_TO_BTC_BUTT, callback_data='dash_to_btc'),
         ],
     ]
     return InlineKeyboardMarkup(keyboard)
@@ -50,9 +62,9 @@ def button_callback_handler(update: Update, context: CallbackContext,):
     if call_data == 'btc_to_usd':
         client = BittrexClient()
         global rate_btc
-        rate_btc = client.get_last_price(pair=USD_BTC_PAIR)
-        text = f'Сейчас за один биткоин дают {rate_btc} долларов\n Введите кол-во BTC:'
-        print(f'srabotal btc--usd ----- {rate_btc}')
+        rate = client.get_last_price(pair=USD_BTC_PAIR)
+        text = f'Сейчас за один биткоин дают {rate} долларов\n Введите кол-во BTC:'
+        print(f'srabotal btc--usd ----- {rate}')
         cur_to_cur = 'BTC_USD'
         query.edit_message_text(
             text=text,
@@ -61,10 +73,50 @@ def button_callback_handler(update: Update, context: CallbackContext,):
 
     if call_data == 'usd_to_btc':
         client = BittrexClient()
-        rate_btc = client.get_last_price(pair=USD_BTC_PAIR)
-        text = f'Сейчас за один доллар дают {1/rate_btc} биткойнов\n Введите кол-во $:'
-        print(f'srabotal btc--usd ----- {rate_btc}')
+        rate = client.get_last_price(pair=USD_BTC_PAIR)
+        text = f'Сейчас за один доллар дают {1/rate} биткойнов\n Введите кол-во $:'
+        print(f'srabotal btc--usd ----- {rate}')
         cur_to_cur = 'USD_BTC'
+        query.edit_message_text(
+            text=text,
+            reply_markup=back_button()
+        )
+
+    if call_data == 'dash_to_usd':
+        client = BittrexClient()
+        rate = client.get_last_price(pair=USD_DASH_PAIR)
+        text = f'Сейчас за один DASH дают {rate} долларов\n Введите кол-во DASH:'
+        cur_to_cur = 'DASH_USD'
+        query.edit_message_text(
+            text=text,
+            reply_markup=back_button()
+        )
+
+    if call_data == 'usd_to_dash':
+        client = BittrexClient()
+        rate = client.get_last_price(pair=USD_DASH_PAIR)
+        text = f'Сейчас за один доллар дают {1/rate} DASH\n Введите кол-во $:'
+        cur_to_cur = 'USD_DASH'
+        query.edit_message_text(
+            text=text,
+            reply_markup=back_button()
+        )
+
+    if call_data == 'btc_to_dash':
+        client = BittrexClient()
+        rate = client.get_last_price(pair=BTC_DASH_PAIR)
+        text = f'Сейчас за один биткоин дают {1/rate} DASH\n Введите кол-во BTC:'
+        cur_to_cur = 'BTC_DASH'
+        query.edit_message_text(
+            text=text,
+            reply_markup=back_button()
+        )
+
+    if call_data == 'dash_to_btc':
+        client = BittrexClient()
+        rate = client.get_last_price(pair=BTC_DASH_PAIR)
+        text = f'Сейчас за один DASH дают {rate} биткойнов\n Введите кол-во DASH:'
+        cur_to_cur = 'DASH_BTC'
         query.edit_message_text(
             text=text,
             reply_markup=back_button()

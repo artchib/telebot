@@ -3,11 +3,12 @@ Description=TelebotApp
 After=network.target
 
 [Service]
-User=tele_b
-Group=tele_b
-WorkinDirectory=/home/tele_b/telebot/
-Environment="PYTHONPATH=/home/tele_b/telebot/"
-ExecStart=python3 /home/tele_b/telebot/bot/main.py
+User=art
+Group=art
+WorkinDirectory=/home/art/telebot/
+Environment="PYTHONPATH=/home/art/telebot/"
+Environment="PYTHONIOENCODING=utf-8"
+ExecStart=/home/art/telebot/.venv/bin/python /home/art/telebot/bot/main.py
 
 [Install]
 WantedBy=multi-user.target
