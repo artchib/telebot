@@ -18,20 +18,20 @@ config = load_config()
 logger = getLogger(__name__)
 
 USD_BTC_PAIR = 'USD-BTC'
-USD_DASH_PAIR = 'USD-DASH'
-BTC_DASH_PAIR = 'BTC-DASH'
+USD_DASH_PAIR = 'USD-ETH'
+BTC_DASH_PAIR = 'BTC-ETH'
 
 BTC_TO_USD_BUTT = 'BTC--->USD'
 USD_TO_BTC_BUTT = 'USD--->BTC'
-DASH_TO_USD_BUTT = 'DASH--->USD'
-USD_TO_DASH_BUTT = 'USD--->DASH'
-BTC_TO_DASH_BUTT = 'BTC--->DASH'
-DASH_TO_BTC_BUTT = 'DASH--->BTC'
+DASH_TO_USD_BUTT = 'ETH--->USD'
+USD_TO_DASH_BUTT = 'USD--->ETH'
+BTC_TO_DASH_BUTT = 'BTC--->ETH'
+DASH_TO_BTC_BUTT = 'ETH--->BTC'
 
 def back_button():
 
     keyboard = [
-            [InlineKeyboardButton('Назад', callback_data=f'btmk')],
+            [InlineKeyboardButton('Назад', callback_data='btmk')],
         ]
     return InlineKeyboardMarkup(keyboard)
 
@@ -85,8 +85,8 @@ def button_callback_handler(update: Update, context: CallbackContext,):
     if call_data == 'dash_to_usd':
         client = BittrexClient()
         rate = client.get_last_price(pair=USD_DASH_PAIR)
-        text = f'Сейчас за один DASH дают {rate} долларов\n Введите кол-во DASH:'
-        cur_to_cur = 'DASH_USD'
+        text = f'Сейчас за один ETH дают {rate} долларов\n Введите кол-во ETH:'
+        cur_to_cur = 'ETH_USD'
         query.edit_message_text(
             text=text,
             reply_markup=back_button()
@@ -95,8 +95,8 @@ def button_callback_handler(update: Update, context: CallbackContext,):
     if call_data == 'usd_to_dash':
         client = BittrexClient()
         rate = client.get_last_price(pair=USD_DASH_PAIR)
-        text = f'Сейчас за один доллар дают {1/rate} DASH\n Введите кол-во $:'
-        cur_to_cur = 'USD_DASH'
+        text = f'Сейчас за один доллар дают {1/rate} ETH\n Введите кол-во $:'
+        cur_to_cur = 'USD_ETH'
         query.edit_message_text(
             text=text,
             reply_markup=back_button()
@@ -105,8 +105,8 @@ def button_callback_handler(update: Update, context: CallbackContext,):
     if call_data == 'btc_to_dash':
         client = BittrexClient()
         rate = client.get_last_price(pair=BTC_DASH_PAIR)
-        text = f'Сейчас за один биткоин дают {1/rate} DASH\n Введите кол-во BTC:'
-        cur_to_cur = 'BTC_DASH'
+        text = f'Сейчас за один биткоин дают {1/rate} ETH\n Введите кол-во BTC:'
+        cur_to_cur = 'BTC_ETH'
         query.edit_message_text(
             text=text,
             reply_markup=back_button()
@@ -115,7 +115,7 @@ def button_callback_handler(update: Update, context: CallbackContext,):
     if call_data == 'dash_to_btc':
         client = BittrexClient()
         rate = client.get_last_price(pair=BTC_DASH_PAIR)
-        text = f'Сейчас за один DASH дают {rate} биткойнов\n Введите кол-во DASH:'
+        text = f'Сейчас за один ETH дают {rate} биткойнов\n Введите кол-во ETH:'
         cur_to_cur = 'DASH_BTC'
         query.edit_message_text(
             text=text,
@@ -159,13 +159,13 @@ def do_text(update: Update, context: CallbackContext):
                 text = f'= {float(message) * rate} $'
             elif cur_to_cur == 'USD_BTC':
                 text = f'= {float(message) / rate} BTC'
-            elif cur_to_cur == 'DASH_USD':
+            elif cur_to_cur == 'ETH_USD':
                 text = f'= {float(message) * rate} $'
-            elif cur_to_cur == 'USD_DASH':
-                text = f'= {float(message) / rate} DASH'
-            elif cur_to_cur == 'BTC_DASH':
-                text = f'= {float(message) / rate} DASH'
-            elif cur_to_cur == 'DASH_BTC':
+            elif cur_to_cur == 'USD_ETH':
+                text = f'= {float(message) / rate} ETH'
+            elif cur_to_cur == 'BTC_ETH':
+                text = f'= {float(message) / rate} ETH'
+            elif cur_to_cur == 'ETH_BTC':
                 text = f'= {float(message) * rate} BTC'
         else:
             context.bot.send_message(
